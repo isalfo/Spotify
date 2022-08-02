@@ -50,6 +50,7 @@
 		C2A82EB028983750000FA245 /* TitleHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A82EAF28983750000FA245 /* TitleHeaderCollectionReusableView.swift */; };
 		C2B7215E2899579A0057C201 /* AlbumTrackCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B7215D2899579A0057C201 /* AlbumTrackCollectionViewCell.swift */; };
 		C2B7216028995B390057C201 /* AlbumCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B7215F28995B390057C201 /* AlbumCollectionViewCellViewModel.swift */; };
+		C2B72162289966550057C201 /* GenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B72161289966550057C201 /* GenreCollectionViewCell.swift */; };
 		C2BEE1F2288F36680033FD3D /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BEE1F1288F36680033FD3D /* SettingsModel.swift */; };
 		C2BEE1F5288F4DED0033FD3D /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C2BEE1F4288F4DED0033FD3D /* SDWebImage */; };
 		C2BEE1F8288F4EF10033FD3D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C2BEE1F7288F4EF10033FD3D /* FirebaseAnalytics */; };
@@ -101,6 +102,7 @@
 		C2A82EAF28983750000FA245 /* TitleHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		C2B7215D2899579A0057C201 /* AlbumTrackCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumTrackCollectionViewCell.swift; sourceTree = "<group>"; };
 		C2B7215F28995B390057C201 /* AlbumCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
+		C2B72161289966550057C201 /* GenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreCollectionViewCell.swift; sourceTree = "<group>"; };
 		C2BEE1F1288F36680033FD3D /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +178,7 @@
 				C2101630289420E5009E0435 /* PlaylistHeaderCollectionReusableView.swift */,
 				C2A82EAF28983750000FA245 /* TitleHeaderCollectionReusableView.swift */,
 				C2B7215D2899579A0057C201 /* AlbumTrackCollectionViewCell.swift */,
+				C2B72161289966550057C201 /* GenreCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				C24EFA3A28904EBF00C68BAD /* NewReleasesResponse.swift in Sources */,
 				C233938E28909DFB00584C3B /* NewReleasesCollectionViewCell.swift in Sources */,
 				C2367E032881AA2300A73FE2 /* HapticsManager.swift in Sources */,
+				C2B72162289966550057C201 /* GenreCollectionViewCell.swift in Sources */,
 				C2467E4D2886EE1500AF1E2B /* AuthResponse.swift in Sources */,
 				C24EFA402890596000C68BAD /* RecommendationsResponse.swift in Sources */,
 				C2B7215E2899579A0057C201 /* AlbumTrackCollectionViewCell.swift in Sources */,
