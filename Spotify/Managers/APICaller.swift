@@ -20,6 +20,53 @@ final class APICaller {
         case failedToGetData
     }
     
+    //MARK: - Albums
+    
+    public func getAlbumDetails(for album: Album, completion: @escaping (Result<AlbumDetailsResponse, Error>) -> Void) {
+        createRequest(with: URL(string: Constants.baseAPIURL + "/albums/" + album.id), type: .GET) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let response = try JSONDecoder().decode(AlbumDetailsResponse.self, from: data)
+                    completion(.success(response))
+                } catch  {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
+    }
+    
+    //MARK: - Playlists
+    
+    public func getPlaylistDetails(for playlist: Playlist, completion: @escaping (Result<PlaylistDetailsReponse, Error>) -> Void) {
+        createRequest(with: URL(string: Constants.baseAPIURL + "/playlists/" + playlist.id), type: .GET) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let response = try JSONDecoder().decode(PlaylistDetailsReponse.self, from: data)
+                    completion(.success(response))
+                } catch  {
+                    print(error)
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
+    }
+    
+    //MARK: - Profile
+    
     public func getCurrenUserProfile(completion: @escaping (Result<UserProfile, Error>) -> Void) {
         
         createRequest(with: URL(string: Constants.baseAPIURL + "/me"), type: .GET) { baseRequest in
@@ -43,6 +90,8 @@ final class APICaller {
         }
     }
     
+    //MARK: - Browse
+    
     public func getNewReleases(completion: @escaping ((Result<NewReleasesResponse, Error>)) -> Void) {
         createRequest(with: URL(string: Constants.baseAPIURL + "/browse/new-releases?limit=50"), type: .GET) { request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
@@ -65,8 +114,10 @@ final class APICaller {
         }
     }
     
+    // MARK: - Featured Playlists
+    
     public func getFeaturedPlaylists(completion: @escaping ((Result<FeaturedPlaylistResponse, Error>) -> Void)) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/featured-playlists?limit=1"),
+        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/featured-playlists?limit=20"),
                       type: .GET) { request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {
@@ -132,6 +183,91 @@ final class APICaller {
         }
     }
     
+    //MARK: - Category
+    
+    public func getCategories(completion: @escaping (Result<[Category], Error>) -> Void) {
+        createRequest(
+            with: URL(string: Constants.baseAPIURL + "/browse/categories?limit=50"),
+            type: .GET
+        ) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(AllCategoriesResponse.self, from: data)
+                    completion(.success(result.categories.items))
+                    print("ASD: \(result)")
+                }
+                catch {
+                    completion(.failure(error))
+                }
+                
+            }
+            task.resume()
+        }
+    }
+    
+    public func getCategoryPlaylists(category: Category, completion: @escaping (Result<[Playlist], Error>) -> Void) {
+        createRequest(
+            with: URL(string: Constants.baseAPIURL + "/browse/categories/\(category.id)/playlists?limit=50"),
+            type: .GET
+        ) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(CategoriesPlaylistResponse.self, from: data)
+                    let playlists = result.playlists.items
+                    completion(.success(playlists))
+                }
+                catch {
+                    completion(.failure(error))
+                }
+                
+            }
+            task.resume()
+        }
+    }
+    
+    //MARK: - Search
+    
+    public func search(with query: String, completion: @escaping (Result<[SearchResult],Error>) -> Void) {
+        createRequest(
+            with: URL(string: Constants.baseAPIURL + "/search?limit=10&type=album,artist,playlist,track&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"),
+            type: .GET
+        ) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(SearchResultsResponse.self, from: data)
+                    
+                    var searchResults: [SearchResult] = []
+                    
+                    searchResults.append(contentsOf: result.tracks.items.compactMap({ .track(model: $0) }))
+                    searchResults.append(contentsOf: result.albums.items.compactMap({ .album(model: $0) }))
+                    searchResults.append(contentsOf: result.artists.items.compactMap({ .artist(model: $0) }))
+                    searchResults.append(contentsOf: result.playlists.items.compactMap({ .playlist(model: $0) }))
+                    
+                    completion(.success(searchResults))
+                }
+                catch {
+                    print(error.localizedDescription)
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+    }
     
     // MARK: - Private
     
